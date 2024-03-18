@@ -12,7 +12,7 @@ terraform {
 <optional terragrunt's configuration goes here>
 
 inputs = {
-  name                   = <name>
+  path                   = <path    >
   ...rest of the inputs go here
 }
 
@@ -28,6 +28,10 @@ generate "providers" {
     terraform {
       required_version = "<version>"
       required_providers {
+        github = {
+          source  = "integrations/github"
+          version = "<version>"
+        }
         github = {
           source  = "fluxcd/flux"
           version = "<version>"
