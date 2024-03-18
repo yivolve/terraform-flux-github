@@ -6,7 +6,7 @@ Terraform module to create Github repositories.
 
 ```hcl
 terraform {
-  source = "tfr:///yivolve/repository/github?version=<tag version>"
+  source = "tfr:///yivolve/github/flux?version=<tag version>"
 }
 
 <optional terragrunt's configuration goes here>
@@ -29,7 +29,7 @@ generate "providers" {
       required_version = "<version>"
       required_providers {
         github = {
-          source  = "integrations/github"
+          source  = "fluxcd/flux"
           version = "<version>"
         }
       }
