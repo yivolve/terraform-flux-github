@@ -1,6 +1,6 @@
 # terraform-github-repository
 
-Terraform module tp bootstrap Flux with GitHub.
+Terraform module to bootstrap Flux with GitHub.
 
 ## How to use this module with Terragrunt
 
