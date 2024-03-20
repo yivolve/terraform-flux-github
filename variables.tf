@@ -84,7 +84,7 @@ variable "aws_account_id" {
   description = "(String)AWS account ID (used to reference the secret)"
 }
 
-variable "secret_name" {
+variable "pem_secret_name" {
   type = string
   description = "(String) AWS secret name"
 }
