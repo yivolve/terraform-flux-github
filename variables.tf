@@ -68,3 +68,24 @@ variable "watch_all_namespaces" {
   description = "(Boolean) If true watch for custom resources in all namespaces. Defaults to true."
   default     = true
 }
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "(String) EKS cluster name"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "(String) Target aws region"
+}
+
+variable "aws_account_id" {
+  type        = string
+  description = "(String)AWS account ID (used to reference the secret)"
+}
+
+variable "pem_secret_name" {
+  type        = string
+  description = "(String) AWS secret name"
+  sensitive   = true
+}
