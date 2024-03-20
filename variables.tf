@@ -75,16 +75,17 @@ variable "eks_cluster_name" {
 }
 
 variable "aws_region" {
-  type = string
+  type        = string
   description = "(String) Target aws region"
 }
 
 variable "aws_account_id" {
-  type = string
+  type        = string
   description = "(String)AWS account ID (used to reference the secret)"
 }
 
 variable "pem_secret_name" {
-  type = string
+  type        = string
   description = "(String) AWS secret name"
+  sensitive   = true
 }
