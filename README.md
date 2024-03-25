@@ -20,28 +20,28 @@ inputs = {
 
 ### Provider Configuration
 
-Ideally you would have the configuration below on a file that can be passed to multiple terragrunt child files:
+1. Ideally you would have the following configuration below on a file that can be passed down to multiple terragrunt child files:
 
-```hcl
-generate "providers" {
-  path      = "providers.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-terraform {
-  required_version = "<version>"
-  required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "<version>"
-    }
-    github = {
-      source  = "fluxcd/flux"
-      version = "<version>"
+  ```hcl
+  generate "providers" {
+    path      = "providers.tf"
+    if_exists = "overwrite_terragrunt"
+    contents  = <<EOF
+  terraform {
+    required_version = "<version>"
+    required_providers {
+      github = {
+        source  = "integrations/github"
+        version = "<version>"
+      }
+      github = {
+        source  = "fluxcd/flux"
+        version = "<version>"
+      }
     }
   }
-}
 
-variable "GH_TOK" { // This is a github token with write permissions to modify the contents of a repo.
+variable "GH_TOK" { // This is a PAT with write permissions to modify the contents of a repo.
   sensitive = true
   type      = string
 }
@@ -54,51 +54,54 @@ EOF
 }
 ```
 
-And then the terragrunt project that calls this module would have this:
+1. Then the terragrunt project that calls this module would have this:
 
-```hcl
-dependency "eks" {
-  config_path = "../<path to eks dependency>/"
+  > [!NOTE]
+  > The inline conditionals statements are needed as "terragrunt plan" would fail if these are not present.
 
-  mock_outputs_allowed_terraform_commands = ["validate", "plan", "init", "force-unlock"]
-  mock_outputs = {
-    cluster_name = "an-utterly-fake-k8s-cluster-name"
-  }
-}
+  ```hcl
+  dependency "eks" {
+    config_path = "../<path to eks dependency>/"
 
-dependency "private_key" {
-  config_path = "../<path to private key dependency>/"
-
-  mock_outputs_allowed_terraform_commands = ["validate", "plan", "init", "force-unlock"]
-  mock_outputs = {
-    secret_name = "a-super-fake-private-pem"
-  }
-}
-
-generate "k8s-required-providers-configuration" {
-  path      = "providers-configuration.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "kubernetes" {
-    host                   = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster.eks[0].endpoint
-    cluster_ca_certificate = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : base64decode(data.aws_eks_cluster.eks[0].certificate_authority[0].data)
-    token                  = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster_auth.eks[0].token
-}
-
-provider "flux" {
-  kubernetes = {
-    host                   = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster.eks[0].endpoint
-    cluster_ca_certificate = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : base64decode(data.aws_eks_cluster.eks[0].certificate_authority[0].data)
-    token                  = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster_auth.eks[0].token
-  }
-  git = {
-    url = "ssh://git@github.com/<github org>/<repo name>.git"
-    ssh = {
-      username    = "git"
-      private_key = var.pem_secret_name == "a-super-fake-private-pem" ? "fake_string" : jsondecode(data.aws_secretsmanager_secret_version.pem_string[0].secret_string)
+    mock_outputs_allowed_terraform_commands = ["validate", "plan", "init", "force-unlock"]
+    mock_outputs = {
+      cluster_name = "an-utterly-fake-k8s-cluster-name"
     }
   }
-}
-EOF
-}
-```
+
+  dependency "private_key" {
+    config_path = "../<path to private key dependency>/"
+
+    mock_outputs_allowed_terraform_commands = ["validate", "plan", "init", "force-unlock"]
+    mock_outputs = {
+      secret_name = "a-super-fake-private-pem"
+    }
+  }
+
+  generate "k8s-required-providers-configuration" {
+    path      = "providers-configuration.tf"
+    if_exists = "overwrite_terragrunt"
+    contents  = <<EOF
+  provider "kubernetes" {
+      host                   = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster.eks[0].endpoint
+      cluster_ca_certificate = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : base64decode(data.aws_eks_cluster.eks[0].certificate_authority[0].data)
+      token                  = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster_auth.eks[0].token
+  }
+
+  provider "flux" {
+    kubernetes = {
+      host                   = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster.eks[0].endpoint
+      cluster_ca_certificate = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : base64decode(data.aws_eks_cluster.eks[0].certificate_authority[0].data)
+      token                  = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? "fake" : data.aws_eks_cluster_auth.eks[0].token
+    }
+    git = {
+      url = "ssh://git@github.com/<github org>/<repo name>.git"
+      ssh = {
+        username    = "git"
+        private_key = var.pem_secret_name == "a-super-fake-private-pem" ? "fake_string" : jsondecode(data.aws_secretsmanager_secret_version.pem_string[0].secret_string)
+      }
+    }
+  }
+  EOF
+  }
+  ```
