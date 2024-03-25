@@ -57,7 +57,7 @@ EOF
 1. Then the terragrunt project that calls this module would have this:
 
   > [!NOTE]
-  > The inline conditionals statements are needed as "terragrunt plan" would fail if these are not present.
+  > The inline conditionals statements are needed so "terragrunt plan" does not fail.
 
   ```hcl
   dependency "eks" {
