@@ -1,4 +1,4 @@
-# terraform-github-repository
+# terraform-flux-github
 
 Terraform module to bootstrap Flux with GitHub.
 
@@ -12,7 +12,7 @@ terraform {
 <optional terragrunt's configuration goes here>
 
 inputs = {
-  path                   = <path    >
+  path                   = <path>
   ...rest of the inputs go here
 }
 
