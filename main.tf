@@ -5,7 +5,7 @@ resource "flux_bootstrap_git" "this" {
   components_extra       = var.components_extra
   interval               = var.interval
   log_level              = var.log_level
-  manifests_path         = var.manifests_path
+  embedded_manifests         = var.embedded_manifests
   namespace              = var.namespace
   network_policy         = var.network_policy
   secret_name            = var.secret_name

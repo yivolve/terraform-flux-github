@@ -33,10 +33,10 @@ variable "log_level" {
   default     = "info"
 }
 
-variable "manifests_path" {
+variable "embedded_manifests" {
   type        = string
-  description = "(String) The install manifests are built from a GitHub release or kustomize overlay if using a local path. Defaults to https://github.com/fluxcd/flux2/releases."
-  default     = "https://github.com/fluxcd/flux2/releases"
+  description = "(Boolean) When enabled, the Flux manifests will be extracted from the provider binary instead of being downloaded from GitHub.com. Defaults to false."
+  default     = "false"
 }
 
 variable "namespace" {
