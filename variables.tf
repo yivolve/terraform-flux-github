@@ -89,3 +89,9 @@ variable "pem_secret_name" {
   description = "(String) AWS secret name"
   sensitive   = true
 }
+
+variable "kustomization_override" {
+  type        = string
+  description = "(String) Kustomization to override configuration set by default."
+  default     = null
+}
