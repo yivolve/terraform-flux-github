@@ -59,8 +59,8 @@ variable "secret_name" {
 
 variable "flux_version" {
   type        = string
-  description = "(String) Flux version. Defaults to v2.2.3"
-  default     = "v2.2.3"
+  description = "(String) Flux version. Defaults to v2.3.0"
+  default     = "v2.3.0"
 }
 
 variable "watch_all_namespaces" {
