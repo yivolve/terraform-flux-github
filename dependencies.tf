@@ -1,11 +1,11 @@
 data "aws_eks_cluster" "eks" {
-  count = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? 0 : 1
-  name  = var.eks_cluster_name
+  count = var.cluster_name == "an-utterly-fake-k8s-cluster-name" ? 0 : 1
+  name  = var.cluster_name
 }
 
 data "aws_eks_cluster_auth" "eks" {
-  count = var.eks_cluster_name == "an-utterly-fake-k8s-cluster-name" ? 0 : 1
-  name  = var.eks_cluster_name
+  count = var.cluster_name == "an-utterly-fake-k8s-cluster-name" ? 0 : 1
+  name  = var.cluster_name
 }
 
 data "aws_secretsmanager_secret" "pem" {
