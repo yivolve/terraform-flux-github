@@ -69,7 +69,7 @@ variable "watch_all_namespaces" {
   default     = true
 }
 
-variable "eks_cluster_name" {
+variable "cluster_name" {
   type        = string
   description = "(String) EKS cluster name"
 }
