@@ -18,7 +18,7 @@ variable "components" {
 variable "components_extra" {
   type        = set(string)
   description = "List of extra components to include in the install manifests."
-  default     = ["image-reflector-controller", "image-automation-controller", "mcp"]
+  default     = ["image-reflector-controller", "image-automation-controller"]
 }
 
 variable "interval" {
