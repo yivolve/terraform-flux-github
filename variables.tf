@@ -18,7 +18,7 @@ variable "components" {
 variable "components_extra" {
   type        = set(string)
   description = "List of extra components to include in the install manifests."
-  default     = ["image-reflector-controller", "image-automation-controller"]
+  default     = ["image-reflector-controller", "image-automation-controller", "mcp"]
 }
 
 variable "interval" {
@@ -59,8 +59,8 @@ variable "secret_name" {
 
 variable "flux_version" {
   type        = string
-  description = "(String) Flux version. Defaults to v2.3.0"
-  default     = "v2.3.0"
+  description = "(String) Flux version. Defaults to v2.6.4"
+  default     = "v2.6.4"
 }
 
 variable "watch_all_namespaces" {
